@@ -3,14 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سعدیہ جاناں کے لیے ایک خاص اور جادوئی تحفہ 💖</title>
-    
-    <!-- Google Fonts for High-Quality Urdu Typography -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Canvas Confetti CDN -->
+    <title>سعدیہ کے لیے ایک جادوئی تحفہ ❤️</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
@@ -18,8 +14,10 @@
             --primary: #ff2a6d;
             --secondary: #ff0055;
             --gold: #ffd700;
-            --rose: #fb7185;
             --bg-dark: #0f0008;
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --card-border: rgba(255, 215, 0, 0.4);
+            --text-gold: #ffe066;
         }
 
         * {
@@ -27,12 +25,12 @@
             margin: 0;
             padding: 0;
             user-select: none;
-            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
         }
 
         body {
             background-color: var(--bg-dark);
-            background-image: radial-gradient(circle at center, #35001c 0%, #15000b 60%, #050003 100%);
+            background-image: radial-gradient(circle at center, #2b0017 0%, #0f0008 100%);
             color: #fff;
             font-family: 'Noto Nastaliq Urdu', 'Amiri', serif;
             min-height: 100vh;
@@ -41,15 +39,19 @@
             justify-content: center;
             align-items: center;
             position: relative;
-            padding: 15px;
+            padding: 20px 10px;
         }
 
-        /* Top Bar: Sound & Visit Status Indicator */
+        /* Top Bar: Live Status & Sound Control */
         .top-bar {
             position: fixed;
             top: 15px;
-            left: 15px;
-            right: 15px;
+            left: 0;
+            right: 0;
+            width: 100%;
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -57,59 +59,60 @@
             pointer-events: none;
         }
 
-        .top-bar > * {
-            pointer-events: auto;
-        }
-
-        .visit-indicator {
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(255, 215, 0, 0.4);
-            border-radius: 30px;
-            padding: 6px 14px;
-            font-size: 0.75rem;
-            color: var(--gold);
+        .visitor-status {
+            background: rgba(0, 0, 0, 0.65);
+            border: 1.5px solid var(--gold);
+            padding: 6px 16px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            color: #fff;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             display: flex;
             align-items: center;
-            gap: 8px;
-            backdrop-filter: blur(8px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            gap: 10px;
+            pointer-events: auto;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
         }
 
         .status-dot {
-            width: 9px;
-            height: 9px;
-            background-color: #22c55e;
+            width: 10px;
+            height: 10px;
+            background-color: #25D366;
             border-radius: 50%;
-            box-shadow: 0 0 10px #22c55e;
-            animation: pulseDot 1.5s infinite;
+            box-shadow: 0 0 10px #25D366;
+            animation: pulseDot 1.5s infinite ease-in-out;
         }
 
         @keyframes pulseDot {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.3); opacity: 0.5; }
+            0% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.3; transform: scale(0.8); }
         }
 
         .music-control {
-            background: rgba(255, 215, 0, 0.15);
+            pointer-events: auto;
+            background: rgba(255, 215, 0, 0.2);
             border: 2px solid var(--gold);
             border-radius: 50%;
-            width: 44px;
-            height: 44px;
+            width: 46px;
+            height: 46px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             cursor: pointer;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
             backdrop-filter: blur(8px);
-            transition: transform 0.2s ease;
+            -webkit-backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
         }
 
         .music-control:active {
             transform: scale(0.9);
         }
 
-        /* Falling Petals & Floating Hearts Animation */
+        /* Continuous Falling Petals & Floating Hearts Effect */
         #fx-container {
             position: fixed;
             top: 0;
@@ -123,81 +126,89 @@
 
         .falling-item {
             position: absolute;
-            top: -50px;
+            top: -60px;
             animation: fall linear infinite;
+            filter: drop-shadow(0 0 5px rgba(255, 42, 109, 0.5));
         }
 
         @keyframes fall {
-            0% { transform: translateY(-50px) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.9; }
-            100% { transform: translateY(105vh) rotate(360deg); opacity: 0.1; }
+            0% {
+                transform: translateY(-60px) rotate(0deg) scale(0.8);
+                opacity: 0;
+            }
+            15% {
+                opacity: 1;
+            }
+            85% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(105vh) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
         }
 
-        /* Main Container Cards */
+        /* 3D Glassmorphism Main Card Container */
         .app-card {
             width: 100%;
-            max-width: 520px;
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1.5px solid rgba(255, 215, 0, 0.35);
+            max-width: 480px;
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 2px solid var(--card-border);
             border-radius: 28px;
-            padding: 35px 25px;
+            padding: 32px 24px;
             text-align: center;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), inset 0 0 20px rgba(255, 42, 109, 0.15);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.85), inset 0 0 20px rgba(255, 42, 109, 0.25);
             display: none;
             z-index: 10;
             position: relative;
-            margin: 50px 0 20px 0;
+            margin: 60px 0 20px 0;
+            transform-style: preserve-3d;
         }
 
         .app-card.active {
             display: block;
-            animation: slideUpFade 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation: cardAppear3D 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
-        @keyframes slideUpFade {
-            0% { opacity: 0; transform: scale(0.9) translateY(40px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        .page-badge {
-            display: inline-block;
-            background: rgba(255, 42, 109, 0.2);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            color: var(--gold);
-            font-size: 0.8rem;
-            padding: 2px 14px;
-            border-radius: 20px;
-            margin-bottom: 12px;
+        @keyframes cardAppear3D {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(40px) rotateX(-15deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0) rotateX(0deg);
+            }
         }
 
         h1 {
             color: #ffb3c6;
-            margin-bottom: 15px;
-            font-size: 1.8rem;
+            margin-bottom: 18px;
+            font-size: 1.7rem;
+            text-shadow: 0 0 15px rgba(255, 42, 109, 0.7);
             line-height: 1.6;
-            text-shadow: 0 0 15px rgba(255, 42, 109, 0.6);
         }
 
         p {
             font-size: 1.15rem;
-            line-height: 2.3;
+            line-height: 2.2;
             color: #fff0f5;
             margin-bottom: 22px;
         }
 
-        /* Input Styling */
+        /* Input & Passcode Area */
         .hint-box {
             color: var(--gold);
             font-size: 0.95rem;
             margin-bottom: 18px;
             font-weight: bold;
             background: rgba(0, 0, 0, 0.45);
-            padding: 10px 15px;
+            padding: 12px;
             border-radius: 14px;
             border: 1px dashed var(--gold);
-            line-height: 1.8;
+            box-shadow: inset 0 0 10px rgba(255, 215, 0, 0.1);
         }
 
         .passcode-input {
@@ -206,15 +217,14 @@
             height: 52px;
             background: rgba(0, 0, 0, 0.65);
             border: 2px solid var(--gold);
-            border-radius: 16px;
+            border-radius: 14px;
             color: #fff;
-            font-size: 1.3rem;
+            font-size: 1.35rem;
             text-align: center;
             outline: none;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
             direction: ltr;
             letter-spacing: 3px;
-            font-family: sans-serif;
             transition: all 0.3s ease;
         }
 
@@ -223,7 +233,7 @@
             border-color: #fff;
         }
 
-        /* Buttons */
+        /* Buttons Styling */
         .btn {
             background: linear-gradient(45deg, var(--primary), var(--secondary));
             color: white;
@@ -234,72 +244,69 @@
             cursor: pointer;
             box-shadow: 0 6px 22px rgba(255, 0, 85, 0.45);
             font-family: inherit;
-            margin-top: 5px;
+            margin-top: 8px;
             transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            display: inline-block;
             text-decoration: none;
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 28px rgba(255, 0, 85, 0.65);
+            box-shadow: 0 8px 28px rgba(255, 0, 85, 0.6);
         }
 
-        .btn:active { transform: scale(0.96); }
+        .btn:active {
+            transform: scale(0.95);
+        }
 
         .btn-whatsapp {
             background: linear-gradient(45deg, #25D366, #128C7E);
             box-shadow: 0 6px 22px rgba(37, 211, 102, 0.45);
             color: white;
-            font-weight: bold;
             width: 100%;
-            margin-top: 15px;
+            box-sizing: border-box;
+            display: block;
+            font-size: 1.15rem;
+            padding: 15px;
         }
 
         .btn-group {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
-            margin-top: 20px;
+            gap: 16px;
+            margin-top: 18px;
             min-height: 65px;
             position: relative;
         }
 
         #no-btn {
             position: relative;
-            background: rgba(70, 70, 70, 0.8);
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: #444;
+            transition: all 0.2s ease;
         }
 
-        /* Interactive Elements */
+        /* Flip Cards Section (Page 3) */
         .cards-grid {
             display: flex;
             flex-direction: column;
             gap: 14px;
-            margin: 20px 0;
+            margin: 22px 0;
         }
 
         .flip-card {
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 215, 0, 0.35);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 215, 0, 0.4);
             border-radius: 16px;
             padding: 16px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: right;
+            transition: all 0.35s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
 
         .flip-card h3 {
-            color: #ffe066;
+            color: var(--text-gold);
             font-size: 1.15rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
         .flip-card p {
@@ -307,248 +314,251 @@
             font-size: 1.05rem;
             margin: 12px 0 0 0;
             color: #fff;
-            line-height: 2.1;
+            line-height: 2;
         }
 
         .flip-card.open {
-            background: rgba(255, 42, 109, 0.22);
+            background: rgba(255, 42, 109, 0.28);
             border-color: var(--gold);
-            box-shadow: 0 5px 20px rgba(255, 42, 109, 0.3);
+            box-shadow: 0 6px 20px rgba(255, 42, 109, 0.4);
         }
 
         .flip-card.open p {
             display: block;
-            animation: fadeIn 0.4s ease;
+            animation: fadeInText 0.4s ease-in-out;
         }
 
-        /* Quiz Choices */
+        /* Custom Poetry Box Section (Page 7) */
+        .poetry-container {
+            background: rgba(0, 0, 0, 0.45);
+            border: 1.5px solid var(--gold);
+            border-radius: 18px;
+            padding: 18px 15px;
+            margin: 18px 0;
+            box-shadow: inset 0 0 15px rgba(255, 215, 0, 0.15);
+        }
+
+        .poetry-line {
+            font-size: 1.2rem;
+            color: var(--text-gold);
+            line-height: 2.3;
+            margin-bottom: 14px;
+            border-bottom: 1px dashed rgba(255, 215, 0, 0.35);
+            padding-bottom: 12px;
+            text-shadow: 0 0 8px rgba(255, 224, 102, 0.3);
+        }
+
+        .poetry-line:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        /* Interactive Quiz Elements (Page 5) */
         .quiz-option {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1.5px solid rgba(255, 215, 0, 0.3);
-            border-radius: 16px;
-            padding: 14px 18px;
-            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.09);
+            border: 1px solid rgba(255, 215, 0, 0.35);
+            padding: 12px 18px;
+            border-radius: 14px;
+            margin: 10px 0;
             cursor: pointer;
-            text-align: right;
             transition: all 0.3s ease;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
+            color: #fff;
         }
 
         .quiz-option:hover {
-            background: rgba(255, 42, 109, 0.3);
+            background: rgba(255, 42, 109, 0.35);
             border-color: var(--gold);
-        }
-
-        .poetry-box {
-            background: rgba(0, 0, 0, 0.4);
-            border-right: 4px solid var(--primary);
-            border-left: 1px solid rgba(255,215,0,0.3);
-            border-radius: 16px;
-            padding: 20px;
-            margin: 20px 0;
-            font-size: 1.25rem;
-            line-height: 2.5;
-            color: #ffe066;
-            text-shadow: 0 0 10px rgba(255,215,0,0.2);
+            transform: scale(1.02);
         }
 
         #error-msg {
             color: #ff6b6b;
             font-size: 0.95rem;
-            margin-top: 10px;
+            margin-top: 12px;
             display: none;
+            font-weight: bold;
         }
 
-        /* Responsiveness optimizations */
+        @keyframes fadeInText {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Fully Responsive Tweaks for Mobile & PC screens */
         @media (max-width: 480px) {
             .app-card {
-                padding: 25px 18px;
-                border-radius: 22px;
+                padding: 24px 16px;
+                margin-top: 55px;
             }
-
             h1 {
-                font-size: 1.55rem;
+                font-size: 1.5rem;
             }
-
             p {
                 font-size: 1.05rem;
-                line-height: 2.1;
+                line-height: 2;
             }
-
-            .btn {
-                padding: 11px 26px;
-                font-size: 1rem;
+            .poetry-line {
+                font-size: 1.1rem;
             }
         }
     </style>
 </head>
 <body onclick="playAudioDirect()">
 
-    <!-- Audio Player Element -->
+    <!-- Audio Element -->
     <audio id="bg-music" loop preload="auto">
         <source src="bg-music.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Top Floating Header Bar -->
+    <!-- Top Status Bar & Sound Controller -->
     <div class="top-bar">
-        <div class="visit-indicator">
-            <span class="status-dot"></span>
-            <span id="tracker-text">سعدیہ آن لائن ہیں ✨</span>
+        <div class="visitor-status">
+            <div class="status-dot"></div>
+            <span id="tracker-text">سعدیہ آن لائن ہیں ✨ (صفحہ 1/8)</span>
         </div>
-        <div class="music-control" id="music-btn" onclick="toggleMusic(event)" title="میوزک آن/آف">🎵</div>
+        <div class="music-control" id="music-btn" onclick="toggleMusic(event)">🎵</div>
     </div>
 
-    <!-- Falling Petals & Hearts Particle Layer -->
+    <!-- Falling Petals & Floating Hearts Animation Container -->
     <div id="fx-container"></div>
 
-    <!-- PAGE 1: Secret Birthday Passcode Lock -->
+    <!-- PAGE 1: Passcode Birthday Entrance Lock -->
     <div class="app-card active" id="page-1">
-        <span class="page-badge">صفحہ ۱ از ۸</span>
         <h1>🔒 رازِ سعدیہ جاناں</h1>
-        <p>اس خاص اور خوبصورت رومانوی دنیا میں قدم رکھنے کے لیے اپنا راز درج کریں سعدیہ...</p>
+        <p>اس خاص رومانوی سفر کو شروع کرنے کے لیے اپنا راز درج کریں...</p>
         
-        <div class="hint-box">💡 ہنٹ: سعدیہ کی تاریخِ پیدائش (07 مئی 2007)</div>
+        <div class="hint-box">💡 ہنٹ: سعدیہ کی برتھ ڈے (07 مئی 2007)</div>
         
         <div>
-            <input type="text" id="passcode" class="passcode-input" placeholder="07052007" maxlength="8">
+            <input type="text" id="passcode" class="passcode-input" placeholder="مثلاً: 07052007" maxlength="8">
         </div>
         
-        <button class="btn" onclick="checkCode()">راز کھولیں ✨</button>
-        <div id="error-msg">❌ اوہ! غلط کوڈ ہے۔ سعدیہ کی صحیح تاریخِ پیدائش درج کریں (07052007)</div>
+        <button class="btn" onclick="checkCode()">سرپرائز کھولیں ✨</button>
+        <div id="error-msg">غلط کوڈ! سعدیہ کی تاریخِ پیدائش درج کریں (07052007)</div>
     </div>
 
-    <!-- PAGE 2: Heartfelt Apology & Playful Button -->
+    <!-- PAGE 2: Apology & Running "No" Button -->
     <div class="app-card" id="page-2">
-        <span class="page-badge">صفحہ ۲ از ۸</span>
         <h1>معذرت و اعترافِ دل 🌹</h1>
         <p>
-            میری پیاری سعدیہ... کل رات مجھے اس طرح آپ کو خاموش نہیں کروانا چاہیے تھا۔ مجھے اپنی اس بے رخی پر دل سے شدید افسوس ہے اور مجھے بورا لگ رہا ہے۔
+            سعدیہ جاناں... کل رات مجھے اس طرح آپ کو خاموش نہیں کروانا چاہیے تھا۔ مجھے اپنی اس بے رخی پر دل سے شدید افسوس ہے۔
             <br><br>
-            آپ کی خاموشی میرے لیے دنیا کا سب سے بھاری بوجھ ہے۔ مجھے اپنے سچے دل سے معاف کر دیجیے۔
+            آپ کی خاموشی میرے لیے دنیا کی سب سے بڑی سزا ہے۔ مجھے دل سے معاف کر دیجیے۔
         </p>
         
-        <div style="font-size: 1.15rem; color: #ffe066; margin-bottom: 10px; font-weight: bold;">
-            کیا آپ نے اپنے رضوان کو معاف کر دیا سعدیہ؟ 🥰
+        <div style="font-size: 1.1rem; color: var(--text-gold); margin-bottom: 10px;">
+            کیا آپ نے اپنے رضوان کو معاف کر دیا سعدیہ؟
         </div>
 
         <div class="btn-group">
-            <button class="btn" onclick="forgiveYes()">جی بالکل! معاف کر دیا ❤️</button>
-            <button class="btn" id="no-btn" onmouseover="moveNoBtn()" onclick="moveNoBtn()" ontouchstart="moveNoBtn()">نہیں۔۔۔ 😜</button>
+            <button class="btn" onclick="forgiveYes()">ہاں، معاف کر دیا ❤️</button>
+            <button class="btn" id="no-btn" onmouseover="moveNoBtn()" onclick="moveNoBtn()">نہیں۔۔۔ 😜</button>
         </div>
     </div>
 
-    <!-- PAGE 3: Expressing Love & Interactive Flip Cards -->
+    <!-- PAGE 3: Expressing Love & Interactive Cards -->
     <div class="app-card" id="page-3">
-        <span class="page-badge">صفحہ ۳ از ۸</span>
-        <h1>سعدیہ کے نام محبت کے خطوط 📖</h1>
-        <p>ان پیارے کارڈز پر کلک کر کے میرے دل کی باتیں پڑھیں سعدیہ:</p>
+        <h1>سعدیہ سے محبت کا اظہار 📖</h1>
+        <p>کارڈز پر کلک کر کے دل کی باتیں پڑھیں سعدیہ:</p>
         
         <div class="cards-grid">
             <div class="flip-card" onclick="toggleCard(this)">
-                <h3><span>✨ کارڈ ۱: آپ کا مقام</span> <span>🔽</span></h3>
-                <p>سعدیہ! آپ صرف میری محبت نہیں، بلکہ میری زندگی کا سب سے انمول تحفہ، میری روح کا سکون اور میری خوشیوں کی وجہ ہیں۔</p>
+                <h3>✨ میرے دل کا احساس</h3>
+                <p>سعدیہ! آپ صرف میری محبت نہیں، بلکہ میری زندگی کا سب سے خوبصورت تحفہ اور میری روح کا سکون ہیں۔</p>
             </div>
             <div class="flip-card" onclick="toggleCard(this)">
-                <h3><span>🌸 کارڈ ۲: آپ کی مسکراہٹ</span> <span>🔽</span></h3>
-                <p>جب آپ مسکراتی ہیں تو میری پوری کائنات روشن ہو جاتی ہے۔ میری دعا ہے کہ آپ کی یہ خوبصورت مسکراہٹ ہمیشہ قائم رہے۔</p>
+                <h3>🌸 آپ کی مسکراہٹ</h3>
+                <p>جب آپ مسکراتی ہیں تو میری پوری دنیا روشن ہو جاتی ہے۔ خدا آپ کی مسکراہٹ ہمیشہ قائم رکھے۔</p>
             </div>
             <div class="flip-card" onclick="toggleCard(this)">
-                <h3><span>💫 کارڈ ۳: ہمارا خاص رشتہ</span> <span>🔽</span></h3>
-                <p>ہماری ہر نوک جھوک کے بعد میری محبت آپ کے لیے اور زیادہ گہری اور مضبوط ہو جاتی ہے۔ آپ کے بغیر ہر لمحہ ادھورا ہے۔</p>
+                <h3>💫 ہمارا خاص تعلق</h3>
+                <p>ہر چھوٹی بڑی نوک جھوک کے بعد میری محبت آپ کے لیے اور زیادہ گہری ہو جاتی ہے۔</p>
             </div>
         </div>
 
-        <button class="btn" onclick="goToPage(4)">تھوڑی سی ہنسی خوشی ➔</button>
+        <button class="btn" onclick="goToPage(4)">مٹھی بھر شرارتیں ➔</button>
     </div>
 
-    <!-- PAGE 4: Romantic Banter & Playful Jokes -->
+    <!-- PAGE 4: Playful Chat & Sweet Humor -->
     <div class="app-card" id="page-4">
-        <span class="page-badge">صفحہ ۴ از ۸</span>
-        <h1>ہماری پیاری نوک جھوک 😜</h1>
+        <h1>تھوڑی سی نوک جھوک 😜</h1>
         <p>
-            سعدیہ جاناں! آپ کو پتہ ہے؟ جب آپ ناراض ہوتی ہیں تو دنیا کی سب سے پیاری اور کیوٹ لڑکی لگتی ہیں... لیکن جب آپ مان جاتی ہیں تو دنیا کی سب سے خوبصورت ملکہ! 👑
+            سعدیہ! ویسے غصے میں آپ اور بھی زیادہ پیاری لگتی ہیں... لیکن اب اتنا بھی غصہ نہ دکھائیں کہ میں مناتے مناتے بوڑھا ہو جاؤں! 😂
             <br><br>
-            ویسے غصہ آپ پر بالکل اچھا نہیں لگتا، اس لیے ہمیشہ مسکراتی رہا کریں کیونکہ آپ کی مسکراہٹ پر تو رضوان کا دل قربان ہے! 😉💖
+            اچھا چلو اب مان بھی جاؤ، ورنہ میں نے پھر سے کوئی پیارا سا شعر سنا کر آپ کو ہنسا دینا ہے!
         </p>
-        <button class="btn" onclick="goToPage(5)">ایک چھوٹا سا پیارا کوئز ➔</button>
+        <button class="btn" onclick="goToPage(5)">ایک چھوٹا سا سوال ➔</button>
     </div>
 
     <!-- PAGE 5: Interactive Quiz -->
     <div class="app-card" id="page-5">
-        <span class="page-badge">صفحہ ۵ از ۸</span>
-        <h1>ہمارے رشتے کا کوئز 💖</h1>
-        <p>سعدیہ! ہماری جوڑی میں سب سے خوبصورت بات کیا ہے؟ (ایک منتخب کریں)</p>
-        
-        <div id="quiz-options">
-            <div class="quiz-option" onclick="answerQuiz('رضوان کی سعدیہ سے بے پناہ محبت! 🥰')">
-                ❤️ رضوان کی سعدیہ سے بے پناہ اور سچی محبت!
-            </div>
-            <div class="quiz-option" onclick="answerQuiz('سعدیہ کا پیارا سا مسکرانا! ✨')">
-                🌸 سعدیہ کا پیارا سا مسکرانا اور ناز نخرے!
-            </div>
-            <div class="quiz-option" onclick="answerQuiz('ہماری کبھی نہ ختم ہونے والی باتیں! 💬')">
-                💬 ہماری پیاری باتیں اور ایک دوسرے کی پرواہ!
-            </div>
-        </div>
+        <h1>ایک پیارا سا سوال 🤔</h1>
+        <p>یہ بتائیں سعدیہ، دنیا میں سب سے زیادہ پیاری اور نٹ کھٹ کون ہے؟</p>
 
-        <div id="quiz-result" style="display:none; color: var(--gold); font-weight: bold; font-size: 1.15rem; margin-top: 15px; background: rgba(0,0,0,0.4); padding: 12px; border-radius: 12px;"></div>
+        <div class="quiz-option" onclick="selectQuiz()">1. رضوان کی سعدیہ ❤️</div>
+        <div class="quiz-option" onclick="selectQuiz()">2. میری پیاری سعدیہ 🌸</div>
+        <div class="quiz-option" onclick="selectQuiz()">3. صرف اور صرف سعدیہ جاناں ✨</div>
 
-        <button class="btn" id="quiz-next-btn" style="display:none; margin-top: 15px;" onclick="goToPage(6)">تجدیدِ وعدہ ➔</button>
+        <div id="quiz-response" style="margin-top: 15px; color: var(--gold); font-weight: bold; display: none;"></div>
+
+        <button class="btn" id="quiz-next-btn" style="display: none; margin-top: 15px;" onclick="goToPage(6)">پیمانِ وفا ➔</button>
     </div>
 
-    <!-- PAGE 6: Promise for Future -->
+    <!-- PAGE 6: Promise for the Future -->
     <div class="app-card" id="page-6">
-        <span class="page-badge">صفحہ ۶ از ۸</span>
-        <h1>تجدیدِ عہد و پیمانِ وفا 💍</h1>
+        <h1>تجدیدِ عہد و وعدہ 💍</h1>
         <p>
             یہ صرف ایک 'سوری' نہیں، بلکہ سعدیہ آپ سے زندگی بھر کا خوبصورت وعدہ ہے—
             <br><br>
-            ہر موڑ پر آپ کا ہاتھ تھام کر چلنے کا، آپ کی ہر خوشی اور غم میں ساتھ کھڑے رہنے کا، اور آپ کو ہمیشہ دنیا کی سب سے خوش نصیب لڑکی بنانے کا!
+            ہمیشہ آپ کا ہاتھ تھام کر چلنے کا، آپ کی ہر بات کو دل سے سننے کا، اور ہر موڑ پر آپ کا ساتھ نبھانے کا!
         </p>
-        <button class="btn" onclick="goToPage(7)">خاص اردو شاعری ➔</button>
+        <button class="btn" onclick="goToPage(7)">خاص شاعری آپ کے لیے ➔</button>
     </div>
 
-    <!-- PAGE 7: Romantic Urdu Poetry -->
+    <!-- PAGE 7: Your Special Poetry Included -->
     <div class="app-card" id="page-7">
-        <span class="page-badge">صفحہ ۷ از ۸</span>
-        <h1>سعدیہ کے لیے خاص اشعار 📜</h1>
-        
-        <div class="poetry-box">
-            "تمہاری اک مسکراہٹ پہ دل ہار جاتے ہیں...<br>
-            سعدیہ! تم سے ہی تو ہماری زندگی میں رنگ آتے ہیں!"
-            <br><br>
-            "تیرے بغیر ہر شام ادھوری سی لگتی ہے...<br>
-            تو ساتھ ہو تو خاموشی بھی خوبصورت لگتی ہے!"
+        <h1>خاص شاعری سعدیہ کے لیے 📜</h1>
+        <p>میرے قلم سے صرف آپ کی نظر...</p>
+
+        <div class="poetry-container">
+            <div class="poetry-line">
+                اچھا تو ڈر کیوں رہی ہو میں ہوں نہ<br>
+                میں سینے سے لگاتا ہوں یہاں بیٹھو
+            </div>
+            <div class="poetry-line">
+                وہ چاند چمک رہا ہے ستارے دھمک رہے ہیں<br>
+                تمھارے گالوں پر بناتا ہوں ۔۔۔ یہاں بیٹھو
+            </div>
+            <div class="poetry-line">
+                اداس کیوں ہو یہ آنسو کیوں بہاتی ہو<br>
+                چلو تم کو ہنساتا ہوں یہاں بیٹھو
+            </div>
         </div>
 
-        <button class="btn" onclick="goToPage(8)">جادوئی سرپرائز دیکھئے 🎉</button>
+        <button class="btn" onclick="goToPage(8)">آخری پیغام ➔</button>
     </div>
 
-    <!-- PAGE 8: Final Celebration & Direct WhatsApp Messaging -->
+    <!-- PAGE 8: Celebration & Direct WhatsApp Button -->
     <div class="app-card" id="page-8">
-        <span class="page-badge">صفحہ ۸ از ۸</span>
-        <h1>ہمیشہ کے لیے صرف آپ کا! 💐</h1>
+        <h1>ہمیشہ کے لیے صرف آپ کا! 🌹</h1>
         <p>
-            بہت بہت شکریہ میری زندگی کو اتنا خوبصورت بنانے کے لیے سعدیہ!  
-            آپ میری زندگی کا سب سے انمول اور خوبصورت تحفہ ہیں۔ ❤️
+            <em>"سعدیہ! تیرے بغیر زندگی ادھوری سی لگتی ہے...<br>تو ساتھ ہو تو ہر خاموشی بھی خوبصورت لگتی ہے!"</em>
+            <br><br>
+            شکریہ میری زندگی میں آنے کے لیے سعدیہ! ❤️
         </p>
         
-        <div style="font-size: 1.1rem; color: var(--gold); margin-bottom: 15px;">
-            اب رضوان کو ایک پیارا سا واٹس ایپ میسج بھیجیں:
-        </div>
-
-        <!-- Direct WhatsApp Message with Sadia's context to +923558056249 -->
-        <a href="https://wa.me/923558056249?text=رضوان!%20میں%20نے%20تمام%20صفحات%20دیکھ%20لیے%20ہیں%20اور%20آپ%20کو%20معاف%20کر%20دیا!%20سعدیہ%20کی%20طرف%20سے%20بہت%20سارا%20پیار%20❤️" class="btn btn-whatsapp" target="_blank">
-            📲 واٹس ایپ پر جواب دیں (رضوان) 💬
+        <a id="wa-link" href="https://wa.me/923558056249?text=رضوان!%20میں%20نے%20آپ%20کو%20معاف%20کر%20دیا%20سعدیہ%20کی%20طرف%20سے%20بہت%20سارا%20پیار%20❤️" class="btn btn-whatsapp" target="_blank">
+            پیارا سا جواب واٹس ایپ کریں 💬
         </a>
     </div>
 
     <script>
         const audio = document.getElementById('bg-music');
         let isPlaying = false;
-        let currentPageIndex = 1;
 
-        // Background Audio Handlers
+        // Auto audio handler on user touch
         function playAudioDirect() {
             if (!isPlaying) {
                 audio.play().then(() => {
@@ -558,6 +568,7 @@
             }
         }
 
+        // Toggle sound button
         function toggleMusic(e) {
             e.stopPropagation();
             if (isPlaying) {
@@ -571,7 +582,7 @@
             }
         }
 
-        // Continuous Rose Petals & Floating Hearts Animation Engine
+        // Continuous Rain Effect (Petals & Hearts)
         function createRain() {
             const fxContainer = document.getElementById('fx-container');
             const items = ['🌸', '🌹', '💖', '✨', '🌺', '💕'];
@@ -582,7 +593,7 @@
                 el.innerText = items[Math.floor(Math.random() * items.length)];
                 el.style.left = Math.random() * 100 + 'vw';
                 el.style.animationDuration = (Math.random() * 2.5 + 3) + 's';
-                el.style.fontSize = (Math.random() * 12 + 16) + 'px';
+                el.style.fontSize = (Math.random() * 14 + 18) + 'px';
                 
                 fxContainer.appendChild(el);
                 setTimeout(() => el.remove(), 5500);
@@ -590,82 +601,56 @@
         }
         createRain();
 
-        // Real-time Visitor Notification Tracker Ping Engine
-        function trackVisit(stepName) {
-            const trackerText = document.getElementById('tracker-text');
-            if (trackerText) {
-                trackerText.innerText = `سعدیہ صفحہ ${stepName} پر ہیں ✨`;
-            }
-            // Real Webhook / Event logger placeholder
-            console.log(`[VISIT NOTIFICATION] Sadia navigated to: Page ${stepName} at ${new Date().toLocaleTimeString()}`);
-        }
-
-        // Passcode Verification System
+        // Birthday Passcode Check
         function checkCode() {
             playAudioDirect();
             const input = document.getElementById('passcode').value.trim();
-            // Accepts 07052007, 752007, 7052007, 7/5/2007
             if (input === '07052007' || input === '752007' || input === '7052007' || input === '7/5/2007') {
                 document.getElementById('error-msg').style.display = 'none';
                 goToPage(2);
             } else {
                 document.getElementById('error-msg').style.display = 'block';
-                const inputEl = document.getElementById('passcode');
-                inputEl.style.borderColor = '#ff2a6d';
-                setTimeout(() => inputEl.style.borderColor = 'var(--gold)', 1000);
             }
         }
 
-        // Playful "No" Button dodge algorithm
+        // Running "No" Button Effect
         function moveNoBtn() {
             const btn = document.getElementById('no-btn');
-            const x = (Math.random() - 0.5) * 220;
-            const y = (Math.random() - 0.5) * 120;
+            const x = (Math.random() - 0.5) * 190;
+            const y = (Math.random() - 0.5) * 110;
             btn.style.transform = `translate(${x}px, ${y}px)`;
-            
-            const playfulTexts = ['نہیں۔۔۔ 😜', 'ارے سوچ لیں! 🥺', 'معاف کر دیں نا! ❤️', 'ایسا نہ کریں! 🙈'];
-            btn.innerText = playfulTexts[Math.floor(Math.random() * playfulTexts.length)];
         }
 
         function forgiveYes() {
-            confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+            confetti({ particleCount: 110, spread: 75, origin: { y: 0.6 } });
             goToPage(3);
         }
 
-        // Flip Card Toggle Logic
+        // Toggle Flip Cards
         function toggleCard(card) {
             card.classList.toggle('open');
         }
 
-        // Quiz Handling
-        function answerQuiz(selectedAnswer) {
-            const resultBox = document.getElementById('quiz-result');
-            const nextBtn = document.getElementById('quiz-next-btn');
-            
-            resultBox.style.display = 'block';
-            resultBox.innerHTML = `بالکل صحیح! ✨<br>${selectedAnswer}<br>سعدیہ اور رضوان کی جوڑی ہمیشہ سلامت رہے! ❤️`;
-            nextBtn.style.display = 'inline-flex';
-            
-            confetti({ particleCount: 60, spread: 60, origin: { y: 0.7 } });
+        // Interactive Quiz Selection
+        function selectQuiz() {
+            const resDiv = document.getElementById('quiz-response');
+            resDiv.innerText = "بالکل صحیح جواب! سعدیہ ہی رضوان کی دنیا ہیں ❤️";
+            resDiv.style.display = 'block';
+            document.getElementById('quiz-next-btn').style.display = 'inline-block';
+            confetti({ particleCount: 60, spread: 55 });
         }
 
-        // Navigation Controller
+        // Smooth Page Transitions & Dynamic Live Status
         function goToPage(pageNum) {
-            currentPageIndex = pageNum;
             document.querySelectorAll('.app-card').forEach(card => card.classList.remove('active'));
             document.getElementById('page-' + pageNum).classList.add('active');
 
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            trackVisit(pageNum);
+            // Live status updater
+            document.getElementById('tracker-text').innerText = `سعدیہ آن لائن ہیں ✨ (صفحہ ${pageNum}/8)`;
 
-            // Confetti trigger on Page 8
+            // Final fireworks confetti on last page
             if(pageNum === 8) {
-                confetti({ 
-                    particleCount: 200, 
-                    spread: 100, 
-                    origin: { y: 0.5 },
-                    colors: ['#ff2a6d', '#ffd700', '#25D366', '#ffffff']
-                });
+                confetti({ particleCount: 160, spread: 100, origin: { y: 0.6 } });
             }
         }
     </script>
