@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سعدیہ جاناں کے لیے ایک خاص اور جادوئی تحفہ 💖</title>
+    
+    <!-- Google Fonts for High-Quality Urdu Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #ff2a6d;
+            --secondary: #ff0055;
+            --gold: #ffd700;
+            --rose: #fb7185;
+            --bg-dark: #0f0008;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at center, #35001c 0%, #15000b 60%, #050003 100%);
+            color: #fff;
+            font-family: 'Noto Nastaliq Urdu', 'Amiri', serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 15px;
+        }
+
+        /* Top Bar: Sound & Visit Status Indicator */
+        .top-bar {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .top-bar > * {
+            pointer-events: auto;
+        }
+
+        .visit-indicator {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            border-radius: 30px;
+            padding: 6px 14px;
+            font-size: 0.75rem;
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .status-dot {
+            width: 9px;
+            height: 9px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #22c55e;
+            animation: pulseDot 1.5s infinite;
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.5; }
+        }
+
+        .music-control {
+            background: rgba(255, 215, 0, 0.15);
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+            backdrop-filter: blur(8px);
+            transition: transform 0.2s ease;
+        }
+
+        .music-control:active {
+            transform: scale(0.9);
+        }
+
+        /* Falling Petals & Floating Hearts Animation */
+        #fx-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .falling-item {
+            position: absolute;
+            top: -50px;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-50px) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.9; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0.1; }
+        }
+
+        /* Main Container Cards */
+        .app-card {
+            width: 100%;
+            max-width: 520px;
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1.5px solid rgba(255, 215, 0, 0.35);
+            border-radius: 28px;
+            padding: 35px 25px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), inset 0 0 20px rgba(255, 42, 109, 0.15);
+            display: none;
+            z-index: 10;
+            position: relative;
+            margin: 50px 0 20px 0;
+        }
+
+        .app-card.active {
+            display: block;
+            animation: slideUpFade 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: scale(0.9) translateY(40px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .page-badge {
+            display: inline-block;
+            background: rgba(255, 42, 109, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            color: var(--gold);
+            font-size: 0.8rem;
+            padding: 2px 14px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            color: #ffb3c6;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+            line-height: 1.6;
+            text-shadow: 0 0 15px rgba(255, 42, 109, 0.6);
+        }
+
+        p {
+            font-size: 1.15rem;
+            line-height: 2.3;
+            color: #fff0f5;
+            margin-bottom: 22px;
+        }
+
+        /* Input Styling */
+        .hint-box {
+            color: var(--gold);
+            font-size: 0.95rem;
+            margin-bottom: 18px;
+            font-weight: bold;
+            background: rgba(0, 0, 0, 0.45);
+            padding: 10px 15px;
+            border-radius: 14px;
+            border: 1px dashed var(--gold);
+            line-height: 1.8;
+        }
+
+        .passcode-input {
+            width: 100%;
+            max-width: 260px;
+            height: 52px;
+            background: rgba(0, 0, 0, 0.65);
+            border: 2px solid var(--gold);
+            border-radius: 16px;
+            color: #fff;
+            font-size: 1.3rem;
+            text-align: center;
+            outline: none;
+            margin-bottom: 15px;
+            direction: ltr;
+            letter-spacing: 3px;
+            font-family: sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .passcode-input:focus {
+            box-shadow: 0 0 20px var(--primary);
+            border-color: #fff;
+        }
+
+        /* Buttons */
+        .btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 13px 32px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 6px 22px rgba(255, 0, 85, 0.45);
+            font-family: inherit;
+            margin-top: 5px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(255, 0, 85, 0.65);
+        }
+
+        .btn:active { transform: scale(0.96); }
+
+        .btn-whatsapp {
+            background: linear-gradient(45deg, #25D366, #128C7E);
+            box-shadow: 0 6px 22px rgba(37, 211, 102, 0.45);
+            color: white;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+            min-height: 65px;
+            position: relative;
+        }
+
+        #no-btn {
+            position: relative;
+            background: rgba(70, 70, 70, 0.8);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Interactive Elements */
+        .cards-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin: 20px 0;
+        }
+
+        .flip-card {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 215, 0, 0.35);
+            border-radius: 16px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: right;
+        }
+
+        .flip-card h3 {
+            color: #ffe066;
+            font-size: 1.15rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .flip-card p {
+            display: none;
+            font-size: 1.05rem;
+            margin: 12px 0 0 0;
+            color: #fff;
+            line-height: 2.1;
+        }
+
+        .flip-card.open {
+            background: rgba(255, 42, 109, 0.22);
+            border-color: var(--gold);
+            box-shadow: 0 5px 20px rgba(255, 42, 109, 0.3);
+        }
+
+        .flip-card.open p {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        /* Quiz Choices */
+        .quiz-option {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1.5px solid rgba(255, 215, 0, 0.3);
+            border-radius: 16px;
+            padding: 14px 18px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            text-align: right;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .quiz-option:hover {
+            background: rgba(255, 42, 109, 0.3);
+            border-color: var(--gold);
+        }
+
+        .poetry-box {
+            background: rgba(0, 0, 0, 0.4);
+            border-right: 4px solid var(--primary);
+            border-left: 1px solid rgba(255,215,0,0.3);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 1.25rem;
+            line-height: 2.5;
+            color: #ffe066;
+            text-shadow: 0 0 10px rgba(255,215,0,0.2);
+        }
+
+        #error-msg {
+            color: #ff6b6b;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Responsiveness optimizations */
+        @media (max-width: 480px) {
+            .app-card {
+                padding: 25px 18px;
+                border-radius: 22px;
+            }
+
+            h1 {
+                font-size: 1.55rem;
+            }
+
+            p {
+                font-size: 1.05rem;
+                line-height: 2.1;
+            }
+
+            .btn {
+                padding: 11px 26px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body onclick="playAudioDirect()">
+
+    <!-- Audio Player Element -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="bg-music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Top Floating Header Bar -->
+    <div class="top-bar">
+        <div class="visit-indicator">
+            <span class="status-dot"></span>
+            <span id="tracker-text">سعدیہ آن لائن ہیں ✨</span>
+        </div>
+        <div class="music-control" id="music-btn" onclick="toggleMusic(event)" title="میوزک آن/آف">🎵</div>
+    </div>
+
+    <!-- Falling Petals & Hearts Particle Layer -->
+    <div id="fx-container"></div>
+
+    <!-- PAGE 1: Secret Birthday Passcode Lock -->
+    <div class="app-card active" id="page-1">
+        <span class="page-badge">صفحہ ۱ از ۸</span>
+        <h1>🔒 رازِ سعدیہ جاناں</h1>
+        <p>اس خاص اور خوبصورت رومانوی دنیا میں قدم رکھنے کے لیے اپنا راز درج کریں سعدیہ...</p>
+        
+        <div class="hint-box">💡 ہنٹ: سعدیہ کی تاریخِ پیدائش (07 مئی 2007)</div>
+        
+        <div>
+            <input type="text" id="passcode" class="passcode-input" placeholder="07052007" maxlength="8">
+        </div>
+        
+        <button class="btn" onclick="checkCode()">راز کھولیں ✨</button>
+        <div id="error-msg">❌ اوہ! غلط کوڈ ہے۔ سعدیہ کی صحیح تاریخِ پیدائش درج کریں (07052007)</div>
+    </div>
+
+    <!-- PAGE 2: Heartfelt Apology & Playful Button -->
+    <div class="app-card" id="page-2">
+        <span class="page-badge">صفحہ ۲ از ۸</span>
+        <h1>معذرت و اعترافِ دل 🌹</h1>
+        <p>
+            میری پیاری سعدیہ... کل رات مجھے اس طرح آپ کو خاموش نہیں کروانا چاہیے تھا۔ مجھے اپنی اس بے رخی پر دل سے شدید افسوس ہے اور مجھے بورا لگ رہا ہے۔
+            <br><br>
+            آپ کی خاموشی میرے لیے دنیا کا سب سے بھاری بوجھ ہے۔ مجھے اپنے سچے دل سے معاف کر دیجیے۔
+        </p>
+        
+        <div style="font-size: 1.15rem; color: #ffe066; margin-bottom: 10px; font-weight: bold;">
+            کیا آپ نے اپنے رضوان کو معاف کر دیا سعدیہ؟ 🥰
+        </div>
+
+        <div class="btn-group">
+            <button class="btn" onclick="forgiveYes()">جی بالکل! معاف کر دیا ❤️</button>
+            <button class="btn" id="no-btn" onmouseover="moveNoBtn()" onclick="moveNoBtn()" ontouchstart="moveNoBtn()">نہیں۔۔۔ 😜</button>
+        </div>
+    </div>
+
+    <!-- PAGE 3: Expressing Love & Interactive Flip Cards -->
+    <div class="app-card" id="page-3">
+        <span class="page-badge">صفحہ ۳ از ۸</span>
+        <h1>سعدیہ کے نام محبت کے خطوط 📖</h1>
+        <p>ان پیارے کارڈز پر کلک کر کے میرے دل کی باتیں پڑھیں سعدیہ:</p>
+        
+        <div class="cards-grid">
+            <div class="flip-card" onclick="toggleCard(this)">
+                <h3><span>✨ کارڈ ۱: آپ کا مقام</span> <span>🔽</span></h3>
+                <p>سعدیہ! آپ صرف میری محبت نہیں، بلکہ میری زندگی کا سب سے انمول تحفہ، میری روح کا سکون اور میری خوشیوں کی وجہ ہیں۔</p>
+            </div>
+            <div class="flip-card" onclick="toggleCard(this)">
+                <h3><span>🌸 کارڈ ۲: آپ کی مسکراہٹ</span> <span>🔽</span></h3>
+                <p>جب آپ مسکراتی ہیں تو میری پوری کائنات روشن ہو جاتی ہے۔ میری دعا ہے کہ آپ کی یہ خوبصورت مسکراہٹ ہمیشہ قائم رہے۔</p>
+            </div>
+            <div class="flip-card" onclick="toggleCard(this)">
+                <h3><span>💫 کارڈ ۳: ہمارا خاص رشتہ</span> <span>🔽</span></h3>
+                <p>ہماری ہر نوک جھوک کے بعد میری محبت آپ کے لیے اور زیادہ گہری اور مضبوط ہو جاتی ہے۔ آپ کے بغیر ہر لمحہ ادھورا ہے۔</p>
+            </div>
+        </div>
+
+        <button class="btn" onclick="goToPage(4)">تھوڑی سی ہنسی خوشی ➔</button>
+    </div>
+
+    <!-- PAGE 4: Romantic Banter & Playful Jokes -->
+    <div class="app-card" id="page-4">
+        <span class="page-badge">صفحہ ۴ از ۸</span>
+        <h1>ہماری پیاری نوک جھوک 😜</h1>
+        <p>
+            سعدیہ جاناں! آپ کو پتہ ہے؟ جب آپ ناراض ہوتی ہیں تو دنیا کی سب سے پیاری اور کیوٹ لڑکی لگتی ہیں... لیکن جب آپ مان جاتی ہیں تو دنیا کی سب سے خوبصورت ملکہ! 👑
+            <br><br>
+            ویسے غصہ آپ پر بالکل اچھا نہیں لگتا، اس لیے ہمیشہ مسکراتی رہا کریں کیونکہ آپ کی مسکراہٹ پر تو رضوان کا دل قربان ہے! 😉💖
+        </p>
+        <button class="btn" onclick="goToPage(5)">ایک چھوٹا سا پیارا کوئز ➔</button>
+    </div>
+
+    <!-- PAGE 5: Interactive Quiz -->
+    <div class="app-card" id="page-5">
+        <span class="page-badge">صفحہ ۵ از ۸</span>
+        <h1>ہمارے رشتے کا کوئز 💖</h1>
+        <p>سعدیہ! ہماری جوڑی میں سب سے خوبصورت بات کیا ہے؟ (ایک منتخب کریں)</p>
+        
+        <div id="quiz-options">
+            <div class="quiz-option" onclick="answerQuiz('رضوان کی سعدیہ سے بے پناہ محبت! 🥰')">
+                ❤️ رضوان کی سعدیہ سے بے پناہ اور سچی محبت!
+            </div>
+            <div class="quiz-option" onclick="answerQuiz('سعدیہ کا پیارا سا مسکرانا! ✨')">
+                🌸 سعدیہ کا پیارا سا مسکرانا اور ناز نخرے!
+            </div>
+            <div class="quiz-option" onclick="answerQuiz('ہماری کبھی نہ ختم ہونے والی باتیں! 💬')">
+                💬 ہماری پیاری باتیں اور ایک دوسرے کی پرواہ!
+            </div>
+        </div>
+
+        <div id="quiz-result" style="display:none; color: var(--gold); font-weight: bold; font-size: 1.15rem; margin-top: 15px; background: rgba(0,0,0,0.4); padding: 12px; border-radius: 12px;"></div>
+
+        <button class="btn" id="quiz-next-btn" style="display:none; margin-top: 15px;" onclick="goToPage(6)">تجدیدِ وعدہ ➔</button>
+    </div>
+
+    <!-- PAGE 6: Promise for Future -->
+    <div class="app-card" id="page-6">
+        <span class="page-badge">صفحہ ۶ از ۸</span>
+        <h1>تجدیدِ عہد و پیمانِ وفا 💍</h1>
+        <p>
+            یہ صرف ایک 'سوری' نہیں، بلکہ سعدیہ آپ سے زندگی بھر کا خوبصورت وعدہ ہے—
+            <br><br>
+            ہر موڑ پر آپ کا ہاتھ تھام کر چلنے کا، آپ کی ہر خوشی اور غم میں ساتھ کھڑے رہنے کا، اور آپ کو ہمیشہ دنیا کی سب سے خوش نصیب لڑکی بنانے کا!
+        </p>
+        <button class="btn" onclick="goToPage(7)">خاص اردو شاعری ➔</button>
+    </div>
+
+    <!-- PAGE 7: Romantic Urdu Poetry -->
+    <div class="app-card" id="page-7">
+        <span class="page-badge">صفحہ ۷ از ۸</span>
+        <h1>سعدیہ کے لیے خاص اشعار 📜</h1>
+        
+        <div class="poetry-box">
+            "تمہاری اک مسکراہٹ پہ دل ہار جاتے ہیں...<br>
+            سعدیہ! تم سے ہی تو ہماری زندگی میں رنگ آتے ہیں!"
+            <br><br>
+            "تیرے بغیر ہر شام ادھوری سی لگتی ہے...<br>
+            تو ساتھ ہو تو خاموشی بھی خوبصورت لگتی ہے!"
+        </div>
+
+        <button class="btn" onclick="goToPage(8)">جادوئی سرپرائز دیکھئے 🎉</button>
+    </div>
+
+    <!-- PAGE 8: Final Celebration & Direct WhatsApp Messaging -->
+    <div class="app-card" id="page-8">
+        <span class="page-badge">صفحہ ۸ از ۸</span>
+        <h1>ہمیشہ کے لیے صرف آپ کا! 💐</h1>
+        <p>
+            بہت بہت شکریہ میری زندگی کو اتنا خوبصورت بنانے کے لیے سعدیہ!  
+            آپ میری زندگی کا سب سے انمول اور خوبصورت تحفہ ہیں۔ ❤️
+        </p>
+        
+        <div style="font-size: 1.1rem; color: var(--gold); margin-bottom: 15px;">
+            اب رضوان کو ایک پیارا سا واٹس ایپ میسج بھیجیں:
+        </div>
+
+        <!-- Direct WhatsApp Message with Sadia's context to +923558056249 -->
+        <a href="https://wa.me/923558056249?text=رضوان!%20میں%20نے%20تمام%20صفحات%20دیکھ%20لیے%20ہیں%20اور%20آپ%20کو%20معاف%20کر%20دیا!%20سعدیہ%20کی%20طرف%20سے%20بہت%20سارا%20پیار%20❤️" class="btn btn-whatsapp" target="_blank">
+            📲 واٹس ایپ پر جواب دیں (رضوان) 💬
+        </a>
+    </div>
+
+    <script>
+        const audio = document.getElementById('bg-music');
+        let isPlaying = false;
+        let currentPageIndex = 1;
+
+        // Background Audio Handlers
+        function playAudioDirect() {
+            if (!isPlaying) {
+                audio.play().then(() => {
+                    isPlaying = true;
+                    document.getElementById('music-btn').innerText = '🔊';
+                }).catch(e => console.log("User touch required for audio playback"));
+            }
+        }
+
+        function toggleMusic(e) {
+            e.stopPropagation();
+            if (isPlaying) {
+                audio.pause();
+                isPlaying = false;
+                document.getElementById('music-btn').innerText = '🔇';
+            } else {
+                audio.play();
+                isPlaying = true;
+                document.getElementById('music-btn').innerText = '🔊';
+            }
+        }
+
+        // Continuous Rose Petals & Floating Hearts Animation Engine
+        function createRain() {
+            const fxContainer = document.getElementById('fx-container');
+            const items = ['🌸', '🌹', '💖', '✨', '🌺', '💕'];
+            
+            setInterval(() => {
+                const el = document.createElement('div');
+                el.classList.add('falling-item');
+                el.innerText = items[Math.floor(Math.random() * items.length)];
+                el.style.left = Math.random() * 100 + 'vw';
+                el.style.animationDuration = (Math.random() * 2.5 + 3) + 's';
+                el.style.fontSize = (Math.random() * 12 + 16) + 'px';
+                
+                fxContainer.appendChild(el);
+                setTimeout(() => el.remove(), 5500);
+            }, 220);
+        }
+        createRain();
+
+        // Real-time Visitor Notification Tracker Ping Engine
+        function trackVisit(stepName) {
+            const trackerText = document.getElementById('tracker-text');
+            if (trackerText) {
+                trackerText.innerText = `سعدیہ صفحہ ${stepName} پر ہیں ✨`;
+            }
+            // Real Webhook / Event logger placeholder
+            console.log(`[VISIT NOTIFICATION] Sadia navigated to: Page ${stepName} at ${new Date().toLocaleTimeString()}`);
+        }
+
+        // Passcode Verification System
+        function checkCode() {
+            playAudioDirect();
+            const input = document.getElementById('passcode').value.trim();
+            // Accepts 07052007, 752007, 7052007, 7/5/2007
+            if (input === '07052007' || input === '752007' || input === '7052007' || input === '7/5/2007') {
+                document.getElementById('error-msg').style.display = 'none';
+                goToPage(2);
+            } else {
+                document.getElementById('error-msg').style.display = 'block';
+                const inputEl = document.getElementById('passcode');
+                inputEl.style.borderColor = '#ff2a6d';
+                setTimeout(() => inputEl.style.borderColor = 'var(--gold)', 1000);
+            }
+        }
+
+        // Playful "No" Button dodge algorithm
+        function moveNoBtn() {
+            const btn = document.getElementById('no-btn');
+            const x = (Math.random() - 0.5) * 220;
+            const y = (Math.random() - 0.5) * 120;
+            btn.style.transform = `translate(${x}px, ${y}px)`;
+            
+            const playfulTexts = ['نہیں۔۔۔ 😜', 'ارے سوچ لیں! 🥺', 'معاف کر دیں نا! ❤️', 'ایسا نہ کریں! 🙈'];
+            btn.innerText = playfulTexts[Math.floor(Math.random() * playfulTexts.length)];
+        }
+
+        function forgiveYes() {
+            confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+            goToPage(3);
+        }
+
+        // Flip Card Toggle Logic
+        function toggleCard(card) {
+            card.classList.toggle('open');
+        }
+
+        // Quiz Handling
+        function answerQuiz(selectedAnswer) {
+            const resultBox = document.getElementById('quiz-result');
+            const nextBtn = document.getElementById('quiz-next-btn');
+            
+            resultBox.style.display = 'block';
+            resultBox.innerHTML = `بالکل صحیح! ✨<br>${selectedAnswer}<br>سعدیہ اور رضوان کی جوڑی ہمیشہ سلامت رہے! ❤️`;
+            nextBtn.style.display = 'inline-flex';
+            
+            confetti({ particleCount: 60, spread: 60, origin: { y: 0.7 } });
+        }
+
+        // Navigation Controller
+        function goToPage(pageNum) {
+            currentPageIndex = pageNum;
+            document.querySelectorAll('.app-card').forEach(card => card.classList.remove('active'));
+            document.getElementById('page-' + pageNum).classList.add('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            trackVisit(pageNum);
+
+            // Confetti trigger on Page 8
+            if(pageNum === 8) {
+                confetti({ 
+                    particleCount: 200, 
+                    spread: 100, 
+                    origin: { y: 0.5 },
+                    colors: ['#ff2a6d', '#ffd700', '#25D366', '#ffffff']
+                });
+            }
+        }
+    </script>
+</body>
+</html>
